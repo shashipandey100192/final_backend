@@ -1,0 +1,30 @@
+backend
+====================
+1) basic package list
+	1) generate package.json file 
+		npm init
+		npm init -y
+
+	2) express.js
+		npm install express
+		npm install express --save 
+
+	3) nodemon(local dev tool)
+		1) npm install nodemon
+		2) config in package.json file 
+			"start": "nodemon server.js"
+
+	4) mongoose (ODM)
+		1) npm install mongoose
+		2) config
+
+	5) cors(Cross-Origin Resource Sharing)
+		1) npm install cors 
+		2) config 
+
+	6) dotenv(.env) 
+		1) npm install dotenv
+		2) config 
+
+
+	
