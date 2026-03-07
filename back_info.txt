@@ -25,6 +25,7 @@ backend
 	6) dotenv(.env) 
 		1) npm install dotenv
 		2) config 
+------------------------------------------------------
 
 
 	

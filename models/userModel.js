@@ -1,12 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const usertype = new mongoose.Schema({
-name:{},
-email:{},
-pass:{},
-dob:{}
+names:{
+    type:String
+},
+age:{
+    type:String
+},
+phone:{
+    type:String
+}
 })
-
 
 const userSchema = mongoose.model("xyz",usertype);
 export default userSchema

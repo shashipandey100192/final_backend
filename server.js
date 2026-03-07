@@ -1,16 +1,17 @@
 
 import express from 'express';
-import routing from './approuting/common/aapcommon.js';
 const app = express();
+import cors from 'cors';
+import routing from './approuting/common/aapcommon.js';
+
 import { configDotenv } from "dotenv";
 configDotenv();
 const myport = process.env.PORT || 9800
 
 
-
-
 app.use(routing);
 app.use(express.json());
+app.use(cors());
 
 
 app.listen(myport,()=>{
