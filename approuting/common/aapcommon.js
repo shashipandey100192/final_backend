@@ -2,6 +2,7 @@
 import express from 'express';
 import mydb from '../../appconnection/dbconnection.js';
 import userSchema from '../../models/userModel.js';
+import studensModel from '../../models/studentAdmission.js';
 const app = express.Router();
 
 
@@ -47,10 +48,27 @@ app.get("/student",async(req,res)=>{
 
 app.post("/registor",async(req,res)=>{
     console.log(req.body);
-    const mydata = {names,age,phone} = req.body;
-    const myform = await userSchema.insertOne(mydata);
+    const {names,age,phone} = req.body;
+    const myform = await userSchema.insertOne({names,age,phone});
     res.status(200).json({data:myform,msg:"insert new document",status:"201"}) 
+});
+
+
+app.post("/studentform", async(req,res)=>{
+    
+    const {sname,roll,mobile,sclass,dob,password,gender,fathername,working} = req.body;
+    const studentdata = await studensModel.insertOne({sname,roll,mobile,sclass,dob,password,gender,fathername,working});
+    res.status(200).json({data:studentdata,msg:"insert students info",status:"202"})
+
+
 })
+
+
+
+
+
+
+
 
 
 

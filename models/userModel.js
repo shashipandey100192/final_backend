@@ -2,10 +2,15 @@ import mongoose, { Types } from "mongoose";
 
 const usertype = new mongoose.Schema({
 names:{
-    type:String
+    type:String,
+    required:true
+
 },
 age:{
-    type:String
+    type:Number,
+    required:true,
+    min: [50, 'minimum age limit 50'],
+    max:[80, 'max age of students']
 },
 phone:{
     type:String

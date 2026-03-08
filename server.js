@@ -9,9 +9,10 @@ configDotenv();
 const myport = process.env.PORT || 9800
 
 
-app.use(routing);
+
 app.use(express.json());
 app.use(cors());
+app.use(routing);
 
 
 app.listen(myport,()=>{
