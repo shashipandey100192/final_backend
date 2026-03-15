@@ -8,8 +8,9 @@ const studenDetails = new mongoose.Schema({
     roll: {
         type: Number
     },
-    sclass: {
-        type: String
+    email: {
+        type: String,
+        unique:true
     },
     gender: {
         type: String
@@ -24,7 +25,7 @@ const studenDetails = new mongoose.Schema({
         type: Date
     },
     working: {
-        type: Boolean
+        type: String
     },
     password: {
         type: String
@@ -38,5 +39,5 @@ const studenDetails = new mongoose.Schema({
 
 },{timestamps:true})
 
-const studensModel = mongoose.model("abc", studenDetails);
+const studensModel = mongoose.model("students_info", studenDetails);
 export default studensModel
