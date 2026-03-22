@@ -71,22 +71,75 @@ app.post("/studentform", async (req, res) => {
 
     const { sname, roll, mobile, email, dob, password, gender, fathername, working } = req.body;
     const uniqueemail = await studensModel.findOne({ email: email });
-   
-   try{
-    if (!uniqueemail) {
-        const studentdata = await studensModel.insertOne({ sname, roll, mobile, email, dob, password, gender, fathername, working });
-        res.status(200).json({ data: studentdata, msg: "data insert successfully", status: 202 })
+
+    try {
+        if (!uniqueemail) {
+            const studentdata = await studensModel.insertOne({ sname, roll, mobile, email, dob, password, gender, fathername, working });
+            res.status(200).json({ data: studentdata, msg: "data insert successfully", status: 202 })
+        }
+        else {
+            res.status(200).json({ msg: "Your Email id Already Exist", status: 350 })
+        }
     }
-    else {
-        res.status(200).json({ msg: "Your Email id Already Exist", status: 350 })   
-    }
-    }
-    catch(error)
-    {
-        res.status(200).json({ msg: "error code", status: 355, errorstype:error.message })   
+    catch (error) {
+        res.status(200).json({ msg: "error code", status: 355, errorstype: error.message });
     }
 
+
+});
+
+
+
+
+app.post("/userlogin", async (req, res) => {
+    const { email, password } = req.body;
+    console.log(email);
+    if (email === "" || password === "") {
+        res.status(200).json({ msg: "email and password is required", status: 420 })
+    }
+    if (email) {
+        const userfond = await studensModel.findOne({ email: email }, { email: 1, password: 1, _id: 0 });
+        console.log(userfond);
+        if (userfond) {
+
+            if (userfond.email === email && userfond.password === password) {
+                res.status(200).json({ msg: "welcome to login page", status: 380 })
+            }
+            else {
+                res.status(200).json({ msg: "Email and password don't match", status: 390 })
+            }
+        }
+        else {
+            res.status(200).json({ msg: "envalid email", status: 270 })
+        }
+    }
+});
+
+
+app.post("/forgetuserinfo", async (req, res) => {
+    const { sname, mobile, dob } = req.body;
+
+    const userinfo = await studensModel.findOne({ $and: [{ sname: sname }, { mobile: mobile }, { dob: dob }] });
+    console.log(userinfo);
+    if (userinfo) {
+        res.status(200).json({ msg: "match data", status: 200, data: userinfo })
+    }
+    else {
+        res.status(200).json({ msg: "record not found", status: 370, data: userinfo })
+    }
 })
+
+
+
+app.patch("/updateuser/:id", async(req,res)=>{
+    const {email,password} = req.body;
+    const update = await studensModel.findByIdAndUpdate({},{})
+
+
+
+})
+
+
 
 
 

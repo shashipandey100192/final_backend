@@ -33,6 +33,18 @@ backend
 2) show user response message after submit post 
 		if(d.data.status===202){alert(d.data.msg);}
 3) unique email have to submit 
+4) error handling using try{} catch(myerror)
+		myerror.message
+		myerror.code
+		myerror.name
+		myerror.stack
+		myerror.status
+		myerror.info
+		myerror.statusCode 
+------------------------------------------------
+5) login api
+	1) 
+	
 
 	
 	
