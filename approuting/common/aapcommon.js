@@ -3,7 +3,10 @@ import express from 'express';
 import mydb from '../../appconnection/dbconnection.js';
 import userSchema from '../../models/userModel.js';
 import studensModel from '../../models/studentAdmission.js';
+import { deleteUser,edituserinfo,singleuserdata } from '../../controls/apicontrols.js';
+import bcrypt from "bcryptjs";
 const app = express.Router();
+
 
 
 
@@ -31,10 +34,10 @@ app.get("/alldata", async (req, res) => {
     const abc = await studensModel.find();
     console.log(abc.length);
     if (abc.length >= 1) {
-        res.status(280).json({ data: abc })
+        res.status(280).json({ userlist: abc })
     }
-    else {
-        res.status(420).json({ data: abc, msg: "data not found", status: 450 });
+    else {  
+        res.status(420).json({ userlist: abc, msg: "data not found", status: 450 });
     };
 });
 
@@ -66,15 +69,17 @@ app.post("/registor", async (req, res) => {
 //     }
 // })
 
-
+const mykey = "sdfjkhsjdfhjshfjs";
 app.post("/studentform", async (req, res) => {
 
     const { sname, roll, mobile, email, dob, password, gender, fathername, working } = req.body;
     const uniqueemail = await studensModel.findOne({ email: email });
+    const salt = bcrypt.genSaltSync(10);
+    const hasspass = bcrypt.hashSync(password, salt,mykey);
 
     try {
         if (!uniqueemail) {
-            const studentdata = await studensModel.insertOne({ sname, roll, mobile, email, dob, password, gender, fathername, working });
+            const studentdata = await studensModel.insertOne({ sname, roll, mobile, email, dob, password:hasspass, gender, fathername, working });
             res.status(200).json({ data: studentdata, msg: "data insert successfully", status: 202 })
         }
         else {
@@ -134,13 +139,14 @@ app.post("/forgetuserinfo", async (req, res) => {
 app.patch("/updateuser/:id", async(req,res)=>{
     const {email,password} = req.body;
     const update = await studensModel.findByIdAndUpdate({},{})
+});
 
 
+app.delete('/userdelete/:id',deleteUser);
 
-})
+app.patch('/edituser/:id', edituserinfo);
 
-
-
+app.get("/singleuser/:id",singleuserdata);
 
 
 

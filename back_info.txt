@@ -45,6 +45,14 @@ backend
 5) login api
 	1) 
 	
-
+tast
+------------------------------------
+	1) display DOB format (2000/02/10  - [26 years])
+	2) display in cards
+		total users:
+		working wise:
+		gender wise:
+	3) display birthday list
+	
 	
 	
