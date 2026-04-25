@@ -53,6 +53,16 @@ tast
 		working wise:
 		gender wise:
 	3) display birthday list
+----------------------------------------------
+6) JWT 
+	1) npm install jsonwebtoken
+	2) import jwt from 'jsonwebtoken';
+	3) token generate ( success response)
+		jwt.sing(payload,key,exp,callback)
+	4) npm install cookies-parser
+		import 
+	
+	
 	
 	
 	

@@ -1,11 +1,16 @@
 "Access-Control-Allow-Origin"
 import express from 'express';
-import mydb from '../../appconnection/dbconnection.js';
+import jwt from 'jsonwebtoken'
+import cookieParser from 'cookie-parser';
 import userSchema from '../../models/userModel.js';
 import studensModel from '../../models/studentAdmission.js';
-import { deleteUser,edituserinfo,singleuserdata } from '../../controls/apicontrols.js';
+import mydb from '../../appconnection/dbconnection.js';
+import { deleteUser, edituserinfo, singleuserdata } from '../../controls/apicontrols.js';
 import bcrypt from "bcryptjs";
+import { verifyToken } from '../../middle/middleware.js';
 const app = express.Router();
+
+
 
 
 
@@ -29,14 +34,14 @@ app.get("/about", (req, res) => {
 // });
 
 
-app.get("/alldata", async (req, res) => {
+app.get("/alldata",verifyToken, async (req, res) => {
 
     const abc = await studensModel.find();
     console.log(abc.length);
     if (abc.length >= 1) {
         res.status(280).json({ userlist: abc })
     }
-    else {  
+    else {
         res.status(420).json({ userlist: abc, msg: "data not found", status: 450 });
     };
 });
@@ -75,11 +80,11 @@ app.post("/studentform", async (req, res) => {
     const { sname, roll, mobile, email, dob, password, gender, fathername, working } = req.body;
     const uniqueemail = await studensModel.findOne({ email: email });
     const salt = bcrypt.genSaltSync(10);
-    const hasspass = bcrypt.hashSync(password, salt,mykey);
+    const hasspass = bcrypt.hashSync(password, salt, mykey);
 
     try {
         if (!uniqueemail) {
-            const studentdata = await studensModel.insertOne({ sname, roll, mobile, email, dob, password:hasspass, gender, fathername, working });
+            const studentdata = await studensModel.insertOne({ sname, roll, mobile, email, dob, password: hasspass, gender, fathername, working });
             res.status(200).json({ data: studentdata, msg: "data insert successfully", status: 202 })
         }
         else {
@@ -96,9 +101,33 @@ app.post("/studentform", async (req, res) => {
 
 
 
+// app.post("/userlogin", async (req, res) => {
+//     const { email, password } = req.body;
+//     console.log(email);
+//     if (email === "" || password === "") {
+//         res.status(200).json({ msg: "email and password is required", status: 420 })
+//     }
+//     if (email) {
+//         const userfond = await studensModel.findOne({ email: email }, { email: 1, password: 1, _id: 0 });
+//         console.log(userfond);
+//         if (userfond) {
+
+//             if (userfond.email === email && userfond.password === password) {
+//                 res.status(200).json({ msg: "welcome to login page", status: 380 })
+//             }
+//             else {
+//                 res.status(200).json({ msg: "Email and password don't match", status: 390 })
+//             }
+//         }
+//         else {
+//             res.status(200).json({ msg: "envalid email", status: 270 })
+//         }
+//     }
+// });
+
+const mysecuritykey = "sdfsjdfhjsdhfjsdfh";
 app.post("/userlogin", async (req, res) => {
     const { email, password } = req.body;
-    console.log(email);
     if (email === "" || password === "") {
         res.status(200).json({ msg: "email and password is required", status: 420 })
     }
@@ -106,9 +135,19 @@ app.post("/userlogin", async (req, res) => {
         const userfond = await studensModel.findOne({ email: email }, { email: 1, password: 1, _id: 0 });
         console.log(userfond);
         if (userfond) {
+            const mypass = bcrypt.compare(userfond.password, password);
 
-            if (userfond.email === email && userfond.password === password) {
-                res.status(200).json({ msg: "welcome to login page", status: 380 })
+            if (userfond.email === email && mypass) {
+                const mytoken = jwt.sign({ email: email, password: password }, mysecuritykey, { expiresIn: "1d" })
+                res.cookie("token", mytoken, {
+                    httpOnly: true,
+                    maxAge: 24 * 60 * 60 * 1000, 
+                    secure: true,
+                });
+                res.status(200).json({ msg: "welcome to login page", status: 380, mytoke: mytoken });
+
+
+
             }
             else {
                 res.status(200).json({ msg: "Email and password don't match", status: 390 })
@@ -119,6 +158,7 @@ app.post("/userlogin", async (req, res) => {
         }
     }
 });
+
 
 
 app.post("/forgetuserinfo", async (req, res) => {
@@ -136,17 +176,17 @@ app.post("/forgetuserinfo", async (req, res) => {
 
 
 
-app.patch("/updateuser/:id", async(req,res)=>{
-    const {email,password} = req.body;
-    const update = await studensModel.findByIdAndUpdate({},{})
+app.patch("/updateuser/:id", async (req, res) => {
+    const { email, password } = req.body;
+    const update = await studensModel.findByIdAndUpdate({}, {})
 });
 
 
-app.delete('/userdelete/:id',deleteUser);
+app.delete('/userdelete/:id', deleteUser);
 
 app.patch('/edituser/:id', edituserinfo);
 
-app.get("/singleuser/:id",singleuserdata);
+app.get("/singleuser/:id", singleuserdata);
 
 
 
