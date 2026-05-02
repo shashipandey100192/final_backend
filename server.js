@@ -14,7 +14,7 @@ const myport = process.env.PORT || 9800
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://final-backend-3unz.onrender.com",
+    origin: "https://final-frontend-aroc.onrender.com",
     credentials: true,
 }));
 app.use(cookieParser());
