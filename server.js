@@ -13,7 +13,7 @@ const myport = process.env.PORT || 9800
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://final-frontend-aroc.onrender.com/",
     credentials: true,
 }));
 app.use(cookieParser());
