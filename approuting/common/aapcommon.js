@@ -127,7 +127,7 @@ app.post("/studentform", async (req, res) => {
 // });
 
 const mysecuritykey = "sdfsjdfhjsdhfjsdfh";
-app.post("/userlogin",verifyToken, async (req, res) => {
+app.post("/userlogin", async (req, res) => {
     const { email, password } = req.body;
     if (email === "" || password === "") {
         res.status(200).json({ msg: "email and password is required", status: 420 })
