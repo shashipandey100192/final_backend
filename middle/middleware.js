@@ -5,7 +5,6 @@ const mysecuritykey = "sdfsjdfhjsdhfjsdfh";
 export const verifyToken = (req, res, next) => {
   try {
     const token = req.cookies.token;
-    console.log(token);
 
     if (!token) {
       res.status(401).json({ msg: "No token provided",status:401 });

@@ -1,5 +1,6 @@
 "Access-Control-Allow-Origin"
 import express from 'express';
+const app = express.Router();
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
 import userSchema from '../../models/userModel.js';
@@ -8,7 +9,7 @@ import mydb from '../../appconnection/dbconnection.js';
 import { deleteUser, edituserinfo, singleuserdata } from '../../controls/apicontrols.js';
 import bcrypt from "bcryptjs";
 import { verifyToken } from '../../middle/middleware.js';
-const app = express.Router();
+
 
 
 
@@ -126,7 +127,7 @@ app.post("/studentform", async (req, res) => {
 // });
 
 const mysecuritykey = "sdfsjdfhjsdhfjsdfh";
-app.post("/userlogin", async (req, res) => {
+app.post("/userlogin",verifyToken, async (req, res) => {
     const { email, password } = req.body;
     if (email === "" || password === "") {
         res.status(200).json({ msg: "email and password is required", status: 420 })

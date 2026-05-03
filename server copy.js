@@ -10,25 +10,13 @@ import { configDotenv } from "dotenv";
 configDotenv();
 const myport = process.env.PORT || 9800
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://final-frontend-aroc.onrender.com"
-];
-
 
 
 app.use(express.json());
 app.use(cors({
-  origin: function(origin, callback){
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
+    origin: "https://final-frontend-aroc.onrender.com",
+    credentials: true,
 }));
-
 app.use(cookieParser());
 app.use(routing);
 
