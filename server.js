@@ -31,6 +31,7 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(routing);
+app.set("trust proxy", 1);
 
 
 app.listen(myport, () => {
