@@ -48,7 +48,7 @@ app.get("/alldata",verifyToken, async (req, res) => {
 });
 
 
-app.get("/student", async (req, res) => {
+app.get("/student",verifyToken, async (req, res) => {
     const allstudents = await userSchema.find({ sno: { $gt: 20 } })
     res.status(200).json({ data: allstudents, msg: "students list", status: 211 })
 });
@@ -178,17 +178,17 @@ app.post("/forgetuserinfo", async (req, res) => {
 
 
 
-app.patch("/updateuser/:id", async (req, res) => {
+app.patch("/updateuser/:id",verifyToken, async (req, res) => {
     const { email, password } = req.body;
     const update = await studensModel.findByIdAndUpdate({}, {})
 });
 
 
-app.delete('/userdelete/:id', deleteUser);
+app.delete('/userdelete/:id',verifyToken, deleteUser);
 
-app.patch('/edituser/:id', edituserinfo);
+app.patch('/edituser/:id',verifyToken, edituserinfo);
 
-app.get("/singleuser/:id", singleuserdata);
+app.get("/singleuser/:id",verifyToken, singleuserdata);
 
 
 
