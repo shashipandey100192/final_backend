@@ -40,10 +40,10 @@ app.get("/alldata",verifyToken, async (req, res) => {
     const abc = await studensModel.find();
     console.log(abc.length);
     if (abc.length >= 1) {
-        res.status(280).json({ userlist: abc })
+        res.status(200).json({ userlist: abc })
     }
     else {
-        res.status(420).json({ userlist: abc, msg: "data not found", status: 450 });
+        res.status(400).json({ userlist: abc, msg: "data not found", status: 450 });
     };
 });
 
